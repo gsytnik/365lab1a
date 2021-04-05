@@ -1,0 +1,29 @@
+import java.util.ArrayList;
+import java.util.TreeSet;
+
+public class RouteCollection {
+	private TreeSet<BusRoute> routes;
+
+	public RouteCollection(TreeSet<BusRoute> routes) {
+		super();
+		this.routes = routes;
+	}
+
+	public BusRoute getRoute(BusRoute route) {
+		
+	    BusRoute ceil  = this.routes.ceiling(route);
+	    BusRoute floor = this.routes.floor(route);   
+	    return ceil == floor? ceil : null; 
+	
+	}
+	
+	public boolean containsRoute(int routeNumber) {
+		return this.routes.contains(new BusRoute(routeNumber, new ArrayList<Student>()));
+	}
+
+	public void addRoute(int routeNumber) {
+		this.routes.add(new BusRoute(routeNumber, new ArrayList<Student>()));
+		
+	}
+	
+}

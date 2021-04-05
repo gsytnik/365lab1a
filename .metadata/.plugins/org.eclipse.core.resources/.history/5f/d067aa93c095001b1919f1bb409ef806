@@ -1,0 +1,30 @@
+import java.util.TreeSet;
+
+public class RouteCollection {
+	private TreeSet<BusRoute> routes;
+
+	public RouteCollection(TreeSet<BusRoute> routes) {
+		super();
+		this.routes = routes;
+	}
+
+	public BusRoute getRoute(BusRoute route) {
+		
+	    BusRoute ceil  = this.routes.ceiling(route);
+	    BusRoute floor = this.routes.floor(route);   
+	    return ceil == floor? ceil : null; 
+	
+	}
+	
+	public boolean containsRoute(BusRoute route) {
+		return this.routes.contains(route);
+	}
+
+	public void addRoute(BusRoute route) {
+		
+		this.routes.add(route);;
+		
+		
+	}
+	
+}

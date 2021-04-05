@@ -1,0 +1,16 @@
+import java.util.HashMap;
+
+public class TeacherCollection {
+	private HashMap<String, Teacher> teachers;
+
+	public TeacherCollection(HashMap<String, Teacher> teachers) {
+		super();
+		this.teachers = teachers;
+	}
+	
+	public Teacher findTeacher(String lastName) {
+		return this.teachers.get(lastName);
+	}
+	
+	
+}

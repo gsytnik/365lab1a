@@ -1,0 +1,15 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class RouteCollection {
+	private ArrayList<BusRoute> routes;
+
+	public RouteCollection(ArrayList<BusRoute> routes) {
+		super();
+		this.routes = routes;
+	}
+	
+	
+	
+	
+}

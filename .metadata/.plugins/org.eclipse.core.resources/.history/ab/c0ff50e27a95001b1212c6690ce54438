@@ -1,0 +1,28 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class StudentCollection {
+	private HashMap<String, ArrayList<Student>> studentList;
+
+	public StudentCollection(HashMap<String, ArrayList<Student>> studentList) {
+		super();
+		this.studentList = studentList;
+	}
+	
+	public void addStudent(Student student) {
+		
+		if (containsLastName(student.getLastName())) {
+			this.studentList.get(student.getLastName()).add(student);
+		} else {
+			this.studentList.put(student.getLastName(), new ArrayList<Student>());
+		}
+	}
+	
+	private boolean containsLastName(String lastName) {
+		return !(null == this.studentList.get(lastName));
+	}
+	
+	
+
+
+}

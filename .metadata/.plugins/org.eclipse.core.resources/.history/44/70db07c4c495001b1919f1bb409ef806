@@ -1,0 +1,26 @@
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class TeacherCollection {
+	private HashMap<String, ArrayList<Teacher>> teacherList;
+
+	public TeacherCollection(HashMap<String, ArrayList<Teacher>> teacherList) {
+		super();
+		this.teacherList = teacherList;
+	}
+	
+	public void addTeacher(Teacher teacher) {
+		
+		if (this.teacherList.containsKey(teacher.getLastName())) {
+			this.teacherList.put(teacher.getLastName(), new ArrayList<Teacher>());
+		}
+		this.teacherList.get(teacher.getLastName()).add(teacher);
+		
+	}
+	
+	public ArrayList<Teacher> findTeacher(String lastName) {
+		return this.teacherList.get(lastName);
+	}
+	
+	
+}

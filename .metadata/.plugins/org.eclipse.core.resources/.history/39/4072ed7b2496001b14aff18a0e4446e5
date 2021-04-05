@@ -1,0 +1,281 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.TreeSet;
+
+public class SchoolSearch {
+	
+	private static StudentCollection studentCol = new StudentCollection(new HashMap<String, ArrayList<Student>>());
+	private static TeacherCollection teacherCol = new TeacherCollection(new HashMap<String, ArrayList<Teacher>>());
+	private static RouteCollection routeCol = new RouteCollection(new TreeSet<BusRoute>());
+	private static GradeLevelCollection gradeLevelCol = new GradeLevelCollection(new HashMap<Integer, GradeLevel>());
+	
+	public static void main(String[] args) {
+		
+		//get data
+		ArrayList<String> fileData = readFileDataFrom("students.txt");
+		
+		//init collections
+		
+		
+		//put data into collection database
+		populateCollections(fileData);
+		
+		System.out.println("Populated Data Succesfully\n");
+		
+		String response;
+		Scanner scanner = new Scanner(System.in).useDelimiter("\\n");
+		do {
+			
+			String input = runGui(scanner);
+			
+			response = parseInput(
+									input
+								  );
+			System.out.print(response);
+			
+		} while (null != response);
+		System.out.println("\n\nYou have decided to terminate the program");
+		scanner.close();
+	}
+	
+	public static String inputPrompt() {
+		String prompt = "";
+		
+		prompt += ("[] = optional input, <> = values you provide\n" +
+					"Commands:\n" +
+					"S[tudent]: <lastname> [B[us]]\n" +
+					"T[eacher]: <lastname>\n" +
+					"B[us]: <number>\n" +
+					"G[rade]: <number> [H[igh]|L[ow]]\n" +
+					"A[verage]: <number>\n" +
+					"I[nfo]\n" +
+					"Q[uit]\n\n" +
+					"Enter a command: "
+				   );
+		
+		return prompt;
+		
+	}
+	
+	//gui code
+	public static String runGui(Scanner scanner) {
+		
+		System.out.print(inputPrompt());
+        String input = scanner.next();
+        System.out.print("You chose: " + input + "\n");
+        return input;
+	}
+	
+	//code to parse gui input
+	public static String parseInput(String input) {
+		
+		String output = "";
+		String [] commands;
+
+		if (!input.contains(" ")) 
+		{
+			
+			if (input.equals("I") || input.equals("Info")) 
+			{
+				output = getGeneralInfo();
+			} else if (input.equals("Q") || input.equals("Quit")) 
+			{
+				return null;
+				
+			} else 
+			{
+				output = "Invalid Command";
+			}
+			
+			
+			return output + "\n";
+		} 
+		
+		commands = input.split(" ");
+		
+		//student
+		if (commands[0].equals("S:") || commands[0].equals("Student:")) 
+		{
+			String lastName = commands[1];
+			if (commands.length == 2) 
+			{
+				output = findStudentsByName(lastName, false);
+			} else if (
+						commands.length >= 3 && 
+						(commands[2].equals("B") || commands[2].equals("Bus"))
+					  ) 
+			{
+				output = findStudentsByName(lastName, true);
+				
+			} else 
+			{
+				output = "Invalid Command";
+			}
+			
+		} else if (commands[0].equals("T:") || commands[0].equals("Teacher:")) 
+		{
+			String lastName = commands[1];
+			output = findTeachersByName(lastName);
+			
+		} else if (commands[0].equals("B:") || commands[0].equals("Bus:")) 
+		{
+			output = findBusRoute(Integer.parseInt(commands[1]));
+			
+		} else if (commands[0].equals("G:") || commands[0].equals("Grade:")) 
+		{
+			
+			boolean byGrade = false;
+			int gradeLevel = Integer.parseInt(commands[1]);
+			if (commands.length >= 3) {
+				
+				byGrade = true;
+				
+				if(commands[2].equals("H") || commands[2].equals("High")) 
+				{
+					
+					output = findGradeLevelInfo(gradeLevel, byGrade, true);
+					
+				} else if (commands[2].equals("L") || commands[2].equals("Low")) 
+				{
+					
+					output = findGradeLevelInfo(gradeLevel, byGrade, false);
+					
+				} else 
+				{
+					
+					output = "Invalid Command";
+					
+				}
+				
+			} else {
+			
+				output = findGradeLevelInfo(gradeLevel, byGrade, false);
+			
+			}
+			
+			
+			
+		} else if (commands[0].equals("A:") || commands[0].equals("Average:")) 
+		{
+			
+		} 
+		
+		return output + "\n";	
+		
+		
+	}
+	
+	//queries ----------------------------------------------
+	public static String getGeneralInfo() {
+		return "Info";
+	
+		
+	}
+	
+	public static String findStudentsByName(String lastName, boolean routeInfo) {
+		
+		return "Student, " + routeInfo;
+	}
+	
+	public static String findTeachersByName(String lastName) {
+		
+		return "Teachers";
+	}
+	
+	public static String findBusRoute(int routeNumber) {
+		
+		return "Bus Route";
+	}
+	
+	public static String findGradeLevelInfo(int gradeLevel, boolean byGrade, boolean high) {
+		
+		return "Grade, " + byGrade + " " + high;
+	}
+	
+	public static String findGradeAverage(int gradeLevel) {
+		return "Average";
+	}
+	
+	
+	//queries ----------------------------------------------
+	
+	//code for filling collections using a line of data from the file in readFileDataFrom
+	public static void populateCollections(ArrayList<String> fileData) {
+		/*
+		 * Each line formatted as follows: 
+		 * [0] student last name
+		 * [1] student first name
+		 * [2] grade level
+		 * [3] teacher classroom number
+		 * [4] bus route
+		 * [5] gpa
+		 * [6] teacher first name
+		 * [7] teacher last name
+		*/
+		for(String line : fileData){
+			
+			//break line into string array with above format
+	        String [] info = line.split(",");
+	        int routeNumber = Integer.parseInt(info[4]);
+	        int gradeLevel = Integer.parseInt(info[2]);
+	        int roomNumber = Integer.parseInt(info[3]);
+	        double gpa = Double.parseDouble(info[5]);
+	        
+	        //add teacher
+	        Teacher teacher;
+	        if (!teacherCol.containsTeacher(info[7], info[6])) {
+	        	teacherCol.addTeacher(new Teacher(info[6], info[7], new ArrayList<Student>(), roomNumber));
+	        }
+	        teacher = teacherCol.getTeacherByName(info[7], info[6]);
+	        
+	        //add bus route
+	        BusRoute busRoute;
+	      
+	        if (routeCol.containsRoute(routeNumber)) {
+	        	busRoute = routeCol.getRoute(new BusRoute(routeNumber, new ArrayList<Student>()));
+	        	
+	        } else {
+	        	busRoute = new BusRoute(routeNumber, new ArrayList<Student>());
+	        	routeCol.addRoute(routeNumber);
+	        }
+	        
+	        //add gradelevel to gradelevels. will only add if not already in the collection
+	        gradeLevelCol.addGradeLevel(gradeLevel);
+	        
+	        //create new student
+	        //gradelevel, first name, lastname, busroute, gpa, teacher
+	        Student student = new Student(gradeLevelCol.getGradeLevel(gradeLevel), info[1], info[0], busRoute, gpa, teacher);
+	        
+	        //add student to student collection
+	        studentCol.addStudent(student); 
+	    }
+		
+		
+		
+	}
+	
+	//obtain all the strings from the file
+	public static ArrayList<String> readFileDataFrom(String fileName) {
+		ArrayList<String> data = new ArrayList<>();
+		try {
+		      File file = new File(fileName);
+		      Scanner fileReader = new Scanner(file);
+		      
+		      while (fileReader.hasNextLine()) {
+		        String line = fileReader.nextLine();
+		        data.add(line);
+		      }
+		      
+		      fileReader.close();
+		      
+		      
+		    } catch (FileNotFoundException e) {
+		      System.out.println("An error occurred.");
+		      e.printStackTrace();
+		    }
+		return data;
+	}
+}

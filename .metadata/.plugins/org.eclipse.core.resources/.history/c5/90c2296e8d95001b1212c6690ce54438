@@ -1,0 +1,18 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class GradeLevelCollection {
+	private ArrayList<GradeLevel> gradeLevels;
+
+	public GradeLevelCollection(ArrayList<GradeLevel> gradeLevels) {
+		super();
+		this.gradeLevels = gradeLevels;
+	}
+	
+	
+	public void sortGradeLevels() {
+		Comparator<GradeLevel> comp = Comparator.comparing(GradeLevel::getGradeLevel());
+		Collections.sort(this.gradeLevels, comp);
+	}
+}

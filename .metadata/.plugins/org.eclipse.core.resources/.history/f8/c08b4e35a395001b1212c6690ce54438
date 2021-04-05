@@ -1,0 +1,38 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class GradeLevelCollection {
+	private ArrayList<GradeLevel> gradeLevels;
+
+	public GradeLevelCollection(ArrayList<GradeLevel> gradeLevels) {
+		super();
+		this.gradeLevels = gradeLevels;
+	}
+	
+	public void addGradeLevel(GradeLevel gradeLevel) {
+		if (!hasGradeLevel(gradeLevel)) {
+			this.gradeLevels.add(gradeLevel);
+			this.sortGradeLevels();
+		}
+	}
+	
+	private boolean hasGradeLevel(GradeLevel gradeLevel) {
+		return !(null == this.getGradeLevel(gradeLevel));
+	}
+	
+	
+	public GradeLevel getGradeLevel(GradeLevel gradeLevel) {
+		for (GradeLevel g : this.gradeLevels) {
+			if (g.getGradeLevel() == gradeLevel.getGradeLevel()) {
+				return g;
+			}
+		}
+		return null;
+	}
+	
+	public void sortGradeLevels() {
+		Comparator<GradeLevel> comp = Comparator.comparing(GradeLevel::getGradeLevel);
+		Collections.sort(this.gradeLevels, comp);
+	}
+}

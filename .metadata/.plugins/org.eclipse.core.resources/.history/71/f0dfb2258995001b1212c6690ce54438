@@ -1,0 +1,86 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+
+public class Gradelevel {
+	private HashMap<String, Double> gradeInfo;
+	private ArrayList<Student> students;
+	private int gradeLevel;
+	
+	public Gradelevel(int gradeLevel, ArrayList<Student> students) {
+		super();
+		this.gradeLevel = gradeLevel;
+		this.students = students;
+		
+		/*
+		 * Set up HashMap with 3 keys 
+		 * low = lowest gpa in grade level
+		 * high = highest gpa in grade level
+		 * average = average gpa for grade
+		*/
+		this.gradeInfo = new HashMap<String, Double>();
+		this.gradeInfo.put("low", null);
+		this.gradeInfo.put("high", null);
+		this.gradeInfo.put("average", 0.0);
+		
+	}
+	
+	public void addStudent(Student student) {
+		this.students.add(student);
+		
+		if (null == this.gradeInfo.get("low") || this.gradeInfo.get("low") > student.getGpa()) {
+			this.gradeInfo.replace("low", student.getGpa());
+		}
+	}
+	
+	public String getHighestGradeInfo() {
+		String info = "Highest GPA: ";
+		double highGpa = this.gradeInfo.get("high");
+		
+		info = info + String.valueOf(highGpa) + "\nStudents: ";
+		
+		//get all students with the highest Gpa value.
+		for (int idx = this.students.size() - 1; idx > 0; idx--) {
+			Student student = this.students.get(idx);
+			if (student.getGpa() == highGpa) {
+				info = (info + student.toString() + " "
+					+ student.getTeacher().toString() + " "
+					+ student.getBusRoute().toString()
+					+ "\n"); 
+			} else if (student.getGpa() < highGpa) {
+				break;
+			}
+		}
+		
+		return info;
+	}
+	
+	public String getLowestGradeInfo() {
+		String info = "Lowest GPA: ";
+		double lowGpa = this.gradeInfo.get("low");
+		
+		info = info + String.valueOf(lowGpa) + "\nStudents: ";
+		
+		//get all students with the lowest Gpa value.
+		for (int idx = 0; idx < this.students.size() - 1; idx++) {
+			Student student = this.students.get(idx);
+			if (student.getGpa() == lowGpa) {
+				info = (info + student.toString() + " "
+					+ student.getTeacher().toString() + " "
+					+ student.getBusRoute().toString()
+					+ "\n"); 
+			} else if (student.getGpa() > lowGpa) {
+				break;
+			}
+		}
+		
+		return info;
+	}
+	
+	public void sortStudentsByGpa() {
+		Comparator<Student> comp = Comparator.comparing(Student::getGpa);
+		Collections.sort(this.students, comp);
+	}
+	
+}

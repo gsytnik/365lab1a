@@ -1,0 +1,11 @@
+import java.util.ArrayList;
+
+public class GradeLevelCollection {
+	private ArrayList<GradeLevel> gradeLevels;
+
+	public GradeLevelCollection(ArrayList<GradeLevel> gradeLevels) {
+		super();
+		this.gradeLevels = gradeLevels;
+	}
+	
+}

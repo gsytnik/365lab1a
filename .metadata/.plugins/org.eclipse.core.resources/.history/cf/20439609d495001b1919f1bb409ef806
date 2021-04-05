@@ -1,0 +1,178 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+import java.util.TreeSet;
+
+public class SchoolSearch {
+	public static void main(String[] args) {
+		
+		//get data
+		ArrayList<String> fileData = readFileDataFrom("students.txt");
+		
+		//init collections
+		StudentCollection studentCol = new StudentCollection(new HashMap<String, ArrayList<Student>>());
+		TeacherCollection teacherCol = new TeacherCollection(new HashMap<String, ArrayList<Teacher>>());
+		RouteCollection routeCol = new RouteCollection(new TreeSet<BusRoute>());
+		GradeLevelCollection gradeLevelCol = new GradeLevelCollection(new HashMap<Integer, GradeLevel>());
+		
+		//put data into collection database
+		populateCollections(studentCol, teacherCol, routeCol, gradeLevelCol, fileData);
+		
+		System.out.println("Populated Data Succesfully\n");
+		
+		String response;
+		do {
+			response = parseInput(
+									runGui(), 
+									studentCol, 
+									teacherCol, 
+									routeCol, 
+									gradeLevelCol
+								  );
+		} while (null != response);
+		System.out.println("You have decided to terminate the program");
+	}
+	
+	public static String inputPrompt() {
+		String prompt = "";
+		
+		prompt += ("[] = optional input, <> = values you provide\n" +
+					"Commands:\n" +
+					"S[tudent]: <lastname> [B[us]]\n" +
+					"T[eacher]: <lastname>\n" +
+					"B[us]: <number>\n" +
+					"G[rade]: <number> [H[igh]|L[ow]]\n" +
+					"A[verage]: <number>\n" +
+					"I[nfo]\n" +
+					"Q[uit]\n\n" +
+					"Enter a command: "
+				   );
+		
+		return prompt;
+		
+	}
+	
+	//gui code
+	public static String runGui() {
+		
+		System.out.print(inputPrompt());
+		Scanner scanner = new Scanner(System.in).useDelimiter("\n");
+        String input = scanner.next();
+        
+        scanner.close();
+        return input;
+	}
+	
+	//code to parse gui input
+	public static String parseInput(String input, StudentCollection studentCol, TeacherCollection teacherCol, 
+									RouteCollection busRouteCol, GradeLevelCollection gradeLevelCol) {
+		String [] commands = input.split(" ");
+		
+		if (commands[0].equals("S") || commands[0].equals("Student")) {
+			
+		} else if (commands[0].equals("T") || commands[0].equals("Teacher")) {
+			
+		} else if (commands[0].equals("B") || commands[0].equals("Bus")) {
+			
+		} else if (commands[0].equals("G") || commands[0].equals("Grade")) {
+			
+		} else if (commands[0].equals("A") || commands[0].equals("Average")) {
+			
+		} else if (commands[0].equals("I") || commands[0].equals("Info")) {
+			
+		} else if (commands[0].equals("Q") || commands[0].equals("Quit")) {
+			return null;
+		} else {
+			return "Invalid Command";
+		}
+		
+		
+	}
+	
+	//queries ----------------------------------------------
+	public static String findStudentsByName(String name) {
+		return null;
+	}
+	
+	//queries ----------------------------------------------
+	
+	//code for filling collections using a line of data from the file in readFileDataFrom
+	public static void populateCollections(StudentCollection studentCol, TeacherCollection teacherCol, 
+									RouteCollection busRouteCol, GradeLevelCollection gradeLevelCol, ArrayList<String> fileData) {
+		/*
+		 * Each line formatted as follows: 
+		 * [0] student last name
+		 * [1] student first name
+		 * [2] grade level
+		 * [3] teacher classroom number
+		 * [4] bus route
+		 * [5] gpa
+		 * [6] teacher first name
+		 * [7] teacher last name
+		*/
+		for(String line : fileData){
+			
+			//break line into string array with above format
+	        String [] info = line.split(",");
+	        int routeNumber = Integer.parseInt(info[4]);
+	        int gradeLevel = Integer.parseInt(info[2]);
+	        int roomNumber = Integer.parseInt(info[3]);
+	        double gpa = Double.parseDouble(info[5]);
+	        
+	        //add teacher
+	        Teacher teacher;
+	        if (!teacherCol.containsTeacher(info[7], info[6])) {
+	        	teacherCol.addTeacher(new Teacher(info[6], info[7], new ArrayList<Student>(), roomNumber));
+	        }
+	        teacher = teacherCol.getTeacherByName(info[7], info[6]);
+	        
+	        //add bus route
+	        BusRoute busRoute;
+	      
+	        if (busRouteCol.containsRoute(routeNumber)) {
+	        	busRoute = busRouteCol.getRoute(new BusRoute(routeNumber, new ArrayList<Student>()));
+	        	
+	        } else {
+	        	busRoute = new BusRoute(routeNumber, new ArrayList<Student>());
+	        	busRouteCol.addRoute(routeNumber);
+	        }
+	        
+	        //add gradelevel to gradelevels. will only add if not already in the collection
+	        gradeLevelCol.addGradeLevel(gradeLevel);
+	        
+	        //create new student
+	        //gradelevel, first name, lastname, busroute, gpa, teacher
+	        Student student = new Student(gradeLevelCol.getGradeLevel(gradeLevel), info[1], info[0], busRoute, gpa, teacher);
+	        
+	        //add student to student collection
+	        studentCol.addStudent(student); 
+	    }
+		
+		
+		
+	}
+	
+	//obtain all the strings from the file
+	public static ArrayList<String> readFileDataFrom(String fileName) {
+		ArrayList<String> data = new ArrayList<>();
+		try {
+		      File file = new File(fileName);
+		      Scanner fileReader = new Scanner(file);
+		      
+		      while (fileReader.hasNextLine()) {
+		        String line = fileReader.nextLine();
+		        data.add(line);
+		      }
+		      
+		      fileReader.close();
+		      
+		      
+		    } catch (FileNotFoundException e) {
+		      System.out.println("An error occurred.");
+		      e.printStackTrace();
+		    }
+		return data;
+	}
+}

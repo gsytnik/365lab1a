@@ -1,0 +1,51 @@
+import java.util.ArrayList;
+
+public class teacher {
+	
+	private String firstName;
+	private String lastName;
+	private ArrayList<student> students;
+	private int classRoom;
+	
+	public teacher(String firstName, String lastName, ArrayList<student> students, int classRoom) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.students = students;
+		this.classRoom = classRoom;
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	public ArrayList<student> getStudents() {
+		return students;
+	}
+	
+	public void setStudents(ArrayList<student> students) {
+		this.students = students;
+	}
+	
+	public int getClassRoom() {
+		return classRoom;
+	}
+	
+	public void setClassRoom(int classRoom) {
+		this.classRoom = classRoom;
+	}
+	
+	
+}

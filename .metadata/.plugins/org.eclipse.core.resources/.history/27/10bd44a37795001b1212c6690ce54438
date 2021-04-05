@@ -1,0 +1,8 @@
+import java.util.HashMap;
+import java.util.TreeSet;
+
+public class StudentCollection {
+	private TreeSet<Student> students;
+
+
+}

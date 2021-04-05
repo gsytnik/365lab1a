@@ -1,0 +1,104 @@
+
+public class student {
+	
+	private String grade;
+	private String firstName;
+	private String lastName;
+	private int busRoute;
+	private int gradeLevel;
+	private int GPA;
+	private int classRoom;
+	private String tfirstName;
+	private String tlastName;
+	
+	public student(String grade, String firstName, String lastName, int busRoute, int gradeLevel, int gPA,
+			int classRoom, String tfirstName, String tlastName) {
+		super();
+		this.grade = grade;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.busRoute = busRoute;
+		this.gradeLevel = gradeLevel;
+		GPA = gPA;
+		this.classRoom = classRoom;
+		this.tfirstName = tfirstName;
+		this.tlastName = tlastName;
+	}
+
+	public String getGrade() {
+		return grade;
+	}
+
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public int getBusRoute() {
+		return busRoute;
+	}
+
+	public void setBusRoute(int busRoute) {
+		this.busRoute = busRoute;
+	}
+
+	public int getGradeLevel() {
+		return gradeLevel;
+	}
+
+	public void setGradeLevel(int gradeLevel) {
+		this.gradeLevel = gradeLevel;
+	}
+
+	public int getGPA() {
+		return GPA;
+	}
+
+	public void setGPA(int gPA) {
+		GPA = gPA;
+	}
+
+	public int getClassRoom() {
+		return classRoom;
+	}
+
+	public void setClassRoom(int classRoom) {
+		this.classRoom = classRoom;
+	}
+
+	public String getTfirstName() {
+		return tfirstName;
+	}
+
+	public void setTfirstName(String tfirstName) {
+		this.tfirstName = tfirstName;
+	}
+
+	public String getTlastName() {
+		return tlastName;
+	}
+
+	public void setTlastName(String tlastName) {
+		this.tlastName = tlastName;
+	}
+	
+	
+	
+	
+	
+}
